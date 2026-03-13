@@ -2,9 +2,42 @@ document.addEventListener("DOMContentLoaded", function () {
     let guessedLetters = [];
     const guessButton = document.querySelector(".guess");
     const inputField = document.getElementById("letter");
-    const message = document.getElementById("message");
-    const wordInProgress = document.getElementById("word-in-progress");
+    const message = document.querySelector(".message");
+    const wordInProgress = document.querySelector(".word-in-progress");
     const word = "magnolia"; // The word to guess
+
+    const guessedLettersElement = document.querySelector(".guessed-letters");
+  
+// Function to update the display of guessed letters
+const updateGuessedLetters = function() {
+  guessedLettersElement.innerHTML = "";
+
+  guessedLetters.forEach(function(letter) {
+    const li = document.createElement("li");
+    li.innerText = letter;
+    guessedLettersElement.append(li);
+  });
+};
+
+// Function to update the word in progress display based on guessed letters
+const updateWordInProgress = function(guessedLetters) {
+  const wordUpper = word.toUpperCase();
+  const wordArray = wordUpper.split("");
+
+  console.log(wordArray);
+
+  const revealedWord = wordArray.map(function(letter) {
+    if (guessedLetters.includes(letter)) {
+      return letter;
+    } else {
+      return "●";
+    }
+  });
+
+  wordInProgress.innerText = revealedWord.join("");
+  checkIfPlayerWon();
+};
+
 
     // Function to validate player input
     const validatePlayerInput = function(inputValue) {
@@ -22,6 +55,26 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     // Function to handle a player's guess
+const makeGuess = function(letter) {
+  const upperCaseLetter = letter.toUpperCase();
+
+  if (guessedLetters.includes(upperCaseLetter)) {
+    message.innerText = "You've already guessed that letter! Try a different one.";
+  } else {
+    guessedLetters.push(upperCaseLetter);
+    console.log("Updated guessed letters:", guessedLetters);
+
+    message.innerText = `You guessed: ${upperCaseLetter}`;
+
+    updateGuessedLetters();
+    updateWordInProgress(guessedLetters);
+  }
+
+  console.log("Player guessed:", upperCaseLetter);
+};
+    // Function to handle a player's guess
+    /* Non updated code kept for refernece 
+    
     const makeGuess = function(letter) {
         const upperCaseLetter = letter.toUpperCase(); // Convert to uppercase for uniformity
 
@@ -36,12 +89,20 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         console.log("Player guessed:", upperCaseLetter); // Log the guessed letter
     };
+    */
 
     // Function to display hidden word with circles (●)
     const hiddenWord = function() {
         wordInProgress.innerText = "●".repeat(word.length); // Display circles for each letter of the word
     };
 
+// Function to check if the player has won
+    const checkIfPlayerWon = function() {
+  if (wordInProgress.innerText === word.toUpperCase()) {
+    message.classList.add("win");
+    message.innerHTML = '<p class="highlight">You guessed correct the word! Congrats!</p>';
+  }
+};
     // Event listener for Guess button
     guessButton.addEventListener("click", function(e) {
         e.preventDefault(); // Prevent form submission
