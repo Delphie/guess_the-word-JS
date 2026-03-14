@@ -19,6 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log(words);
 
     const wordArray = words.split("\n");
+    console.log(wordArray);
 
     const randomIndex = Math.floor(Math.random() * wordArray.length);
     const randomWord = wordArray[randomIndex].trim();
