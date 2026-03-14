@@ -143,13 +143,20 @@ const updateRemainingGuesses = function(guess) {
 
 // Function to check if the player has won
     const checkIfPlayerWon = function() {
-if (wordInProgress.innerText === word.toUpperCase()) {
+      const revealed = wordInProgress.innerText.split(" ").join("");
+
+     if (revealed === word.toUpperCase()) {
+    message.classList.add("win");
+    message.innerHTML = '<p class="highlight">You guessed correct the word! Congrats!</p>';
+    startOver();
+  }
+};
+/* old function for reference if (wordInProgress.innerText === word.toUpperCase()) {
   message.classList.add("win");
   message.innerHTML = '<p class="highlight">You guessed correct the word! Congrats!</p>';
   startOver();
 }
-};
-    
+};*/
 
     // Function to start a new game
     const startOver = function() {
